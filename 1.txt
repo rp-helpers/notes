@@ -1,0 +1,338 @@
+API Gateway – wzorzec integracyjny. Tylko jeden service jest udostępniany publicznie. Ten udostępniony publiczny service nazwyaany jest API Gateway, który jest odptywany przez klientów I kieruje ruchem na podstawie filtrów I określonych routingów.
+Zuul z Netflix implementuje standard API Gateway.
+
+Service Discovery – mechanizm wykorzystywany w środowisku cloudowym. Implementacje tego wzorca to np Eureca od Netflixa.
+
+- Kotlin.
+
+- Kotlin + Spring Boot.
+
+- Spring Cloud Stream + Kafka.
+
+- Docker:
+
+      -- czyli jak zbudować własne obrazy z aplikacja Spring Boota 
+(Dockerfile),
+
+      -- docker compose.
+
+- Tematyka Microserwisów.
+
+
+git config --global user.name "Rafał Pryjda"
+git config --global user.email r.pryjda@op.pl
+
+Spring cloud dostarcza narzędzia developerskie do szybkiego budowania niektórych wzorców architektonicznych dla syatemów rozproszonych.
+
+Distributed/versioned configuration
+    • Service registration and discovery
+    • Routing
+    • Service-to-service calls
+    • Load balancing
+    • Circuit Breakers
+    • Global locks
+    • Leadership election and cluster state
+    • Distributed messaging
+
+
+true
+com.intellij.openapi.updateSettings.impl.PluginDownloader@6db136af
+true
+com.intellij.openapi.updateSettings.impl.PluginDownloader@1f212fa2
+Jms messanger 
+
+/home/rpa/software/kafka/bin/kafka-server-start.sh /home/rpa/software/kafka/config/server.properties
+
+rpa@UbuntuMachine:~/software$ /home/rpa/software/kafka/bin/kafka-server-start.sh /home/rpa/software/kafka/config/server.properties
+Classpath is empty. Please build the project first e.g. by running './gradlew jar -PscalaVersion=2.11.12'
+rpa@UbuntuMachine:~/software$ ./gradlew jar -PscalaVersion=2.11.12
+bash: ./gradlew: No such file or directory
+rpa@UbuntuMachine:~/software$ 
+
+cat server.properties
+sudo xdg-open server.properties 
+
+/home/rpa/software/kafka/bin/kafka-server-start.sh /home/rpa/software/kafka/config/server.properties
+
+
+Zookeeper:
+
+sudo apt-get update
+sudo apt-get install zookeeperd
+sudo ./zkServer.sh start
+sudo ./zkServer.sh stop
+echo dump | nc localhost 2181 | grep brokers
+
+Secure delete:
+
+sudo apt-get install secure-delete
+ls -al
+srm -r .git
+
+Procesy:
+
+sudo apt-get install htop
+htop
+
+sudo apt install net-tools
+netstat -anlp | grep $9092
+netstat -anlp | grep $2181
+
+netstat -natu | grep 'ESTABLISHED'
+
+Kafka
+
+rpa@UbuntuMachine:~/software/kafka$ bin/kafka-topics.sh --list --zookeeper localhost:2181
+__consumer_offsets
+greetings
+rpa@UbuntuMachine:~/software/kafka$ bin/kafka-console-producer.sh --broker-list localhost:9092 --topic greetings
+>this is my message
+>this is another message
+>{site: me}
+>{message: me}
+>Greetings(timestamp=1552144982025, message=toja)
+>{"timestamp":1552151489985,"message":"from terminal"}
+
+Java runned app
+
+ps aux | grep java
+jps -lV
+(is most useful. Prints just pid and qualified main class name:
+2472 com.intellij.idea.Main
+11111 sun.tools.jps.Jps
+9030 play.server.Server
+2752 org.jetbrains.idea.maven.server.RemoteMavenServer
+)
+pgrep -fl java
+jcmd
+https://stackoverflow.com/questions/6283167/list-of-java-processes 
+execute java processes:
+ps -ef | grep java
+
+java install:
+https://www.digitalocean.com/community/tutorials/how-to-install-java-with-apt-on-ubuntu-18-04 
+
+Linux release:
+cat /etc/os-release
+lsb_release -a
+hostnamectl
+https://www.cyberciti.biz/faq/how-to-check-os-version-in-linux-command-line/ 
+
+
+Terminal w kontenerze 
+– Opcje
+ -i -t 
+--i - dołącz do STDIN kontenera
+ -t - zaalokuj pseudoterminal - podaj shell jako komendę - Przykład: - docker run -i -t ubuntu:latest /bin/bash
+
+mysql
+
+sudo apt-get update
+sudo apt install mysql-server
+
+sudo mysql –version
+
+sudo service mysql status
+sudo service mysql start
+
+mysql
+show databases;
+use mysql;
+SELECT user,authentication_string,plugin,host FROM mysql.user;
+
+ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'password';
+
+
+ Update mysql.user set authentication_string = password('newpassword') where user = 'root';
+ 
+FLUSH PRIVILEGES;
+exit
+
+CREATE USER 'newuser'@'localhost' IDENTIFIED BY 'password';
+
+GRANT ALL PRIVILEGES ON database_name.* TO 'username'@'localhost';
+
+GRANT ALL PRIVILEGES ON *.* TO 'newuser'@'%';
+
+
+FLUSH PRIVILEGES;
+exit
+
+docker
+
+apt install docker.io
+
+copy files:
+docker cp file.extension mycontainer:/home/software/file.extension
+
+docker cp rest-api-kotlin-0.0.1-SNAPSHOT.jar 81256a00191e:/home/software/ rest-api-kotlin-0.0.1-SNAPSHOT.jar
+
+~/IdeaProjects/rest-api-kotlin/target
+
+ale ścieżka od zera: (rpa@UbuntuMachine:~$ )
+sudo docker cp ~/IdeaProjects/rest-api-kotlin/target/rest-api-kotlin-0.0.1-SNAPSHOT.jar 81256a00191e:/home/software/
+
+sudo docker run -it rp/47b19964fb50:VER4.0jar /bin/bash
+service mysql start
+
+Dockerfile – to plik konfiguracyjny zawierający instrukcje potrzebne do budowy obrazu. Bardziej efektywny niż użycie docker commit. 
+
+FROM – określa obraz bazowy
+RUN – określa komendę do wykonania
+
+np. 
+FROM ubuntu:latest
+RUN apt-get install vim
+RUN apt-get install curl
+
+Każda komenda RUN zostanie wykonana na zapisywalnej warstwie, a następnie system wykonuje docker commit tworząc nowy obraz pośredni.
+Można łączyć wiele komend w ramach jednego obrazu pośredniego za pomocą konstrukcji &&.
+
+np.
+RUN apt-get update && \
+apt-get install -y && \ 
+curl vim openjdk-7-jdk
+
+Składnia docker build:
+docker build [opcje] [path to project]
+path to project – to miejsce gdzie znajduje się Dockerfile
+typowo podaje się opcję -t dodając tag np:
+docker build -t eevee/myapp:1.0
+
+CMD
+CMD definiuje domyślną komendę jaka będzie wykonana po utworzeniu kontenera.
+Uwaga: CMD nie jest wykonywane w procesie budowania obrazu.
+Dwa możliwe formaty:
+Shell (string) - np. /usr/bin/my_server
+Exec (tablica) - np. [“/bin/ping”, “127.0.0.1”, “-c”, “50”]
+CMD może pojawić się tylko raz w dockerfile.
+CMD może być zmienione w czasie uruchamiania konetenera:
+docker run [obraz] [komenda]
+(analogia do echo jako [komenda] np [echo “Hello World”]
+
+ENTRYPOINT
+cmd I entrypoint to nie to samo.
+Entrypoint:
+- definiuyje komendę jaka ma być uruchomiona po utworzeniu kontenera
+- komenda uruchomieniowa I CMD są przekazywane jako argumenty do programu wskazanego przez ENTRYPOINT.
+- format to Shell lub Executing
+- standardowo jest to sh -c
+
+Sortowanie I zatrzymywanie
+
+docker start ID
+docker stop ID
+
+docker exec – umożliwia uruchomienie (wstrzyknięcie) dodatkowego procesu do już działającego kontenera
+Aby otrzymać dostęp do terminala na działającym kontenerze:
+docker exec -it ID binbash
+Wyjście z terminala: exit lub logout – nie zatrzyma kontenera
+
+
+java in background
+
+You can try this:
+#!/bin/sh
+nohup java -jar /web/server.jar &
+The & symbol, switches the program to run in the background.
+The nohup utility makes the command passed as an argument run in the background even after you log out.
+
+
+
+rpa@UbuntuMachine:~/forTest$ sudo docker build -t rp/myapp:ver.1.0 /home/rpa/forTest/
+Sending build context to Docker daemon  3.072kB
+Step 1/4 : FROM ubuntu:latest
+ ---> 47b19964fb50
+Step 2/4 : RUN apt-get update
+ ---> Using cache
+ ---> 1f69f4f43918
+Step 3/4 : RUN mkdir rafalfolder
+ ---> Running in 5614770c0080
+Removing intermediate container 5614770c0080
+ ---> c423cd04b623
+Step 4/4 : CMD ["echo", ""hello world""]
+ ---> Running in f14f8d39bc40
+Removing intermediate container f14f8d39bc40
+ ---> a3f03175839b
+Successfully built a3f03175839b
+Successfully tagged rp/myapp:ver.1.0
+rpa@UbuntuMachine:~/forTest$ 
+
+Pro tip
+You may push a new image to this repository using the CLI:
+docker tag local-image:tagname new-repo:tagname
+docker push new-repo:tagname
+Make sure to change tagname with your desired image repository tag.
+docker push rpryjda/first:tagname
+
+sudo docker tag rp/47b19964fb50:VER4.0jar rpryjda/first:tagname
+sudo docker push rpryjda/first:tagname
+
+BUILDING IMAGE:
+
+https://spring.io/guides/topicals/spring-boot-docker 
+https://spring.io/guides/gs/spring-boot-docker/ 
+
+from dockerfile:
+FROM openjdk:8-jdk-alpine
+WORKDIR /myapp
+COPY target/*.jar app.jar
+ENTRYPOINT ["java","-jar","/myapp/app.jar"]
+
+sudo docker build -t app/rest:2 .
+sudo docker run -it -p 8080:8080 app/rest:2 /bin/bash
+sudo docker exec -it loving_pike /bin/sh
+
+Container IP:
+sudo docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' docker-mysql-2
+
+ip addr show
+
+
+MYSQL 
+……………………………………………………………………………………………………………………………………………………………………………………
+
+sudo docker run --name docker-mysql-2 -p 3306:3306 rpryjda/mysql:1
+sudo docker run --name=docker-mysql --env="MYSQL_ROOT_PASSWORD=root" --env="MYSQL_PASSWORD=root" --env="MYSQL_DATABASE=test" mysql
+Drop user rp@'localhost';
+SELECT user, host FROM mysql.user;
+CREATE USER 'rp'@'%' IDENTIFIED BY 'rp11';
+GRANT ALL PRIVILEGES ON *.* TO 'rp’@'%'; IDENTIFIED BY 'rp11'
+FLUSH PRIVILEGES;
+
+
+sudo docker commit docker-mysql-2 rp/mysql:2
+
+sudo docker tag rp/mysql:2 rpryjda/mysql:2
+
+sudo docker push rpryjda/mysql:2
+
+sudo docker tag rp/rest:2 rpryjda/rest:2
+sudo docker push rpryjda/rest:2
+
+
+
+CONTAINER ID        IMAGE               COMMAND                  CREATED             STATUS              PORTS                               NAMES
+8ba84a89e2a9        rp/rest:2           "java -jar /spring-b…"   41 minutes ago      Up 41 minutes       0.0.0.0:8080->8080/tcp              docker-rest-mysql
+003b24d58c7f        rpryjda/mysql:1     "docker-entrypoint.s…"   About an hour ago   Up About an hour    0.0.0.0:3306->3306/tcp, 33060/tcp   docker-mysql-2
+
+…………………………………………………………………………………………………………………….
+mvn clean install
+
+FROM openjdk:8-jre-alpine
+WORKDIR /spring-boot-app
+COPY target/*.jar app.jar
+ENTRYPOINT ["java","-jar","/spring-boot-app/app.jar"]
+
+sudo docker build -t rp/rest:2 .
+
+sudo docker run --name docker-rest-mysql -d --link docker-mysql-2 -p 8080:8080 rp/rest:2
+…………………………………………………………………………………………………………………….
+Po stronie serwera:
+
+docker pull rpryjda/rest:2
+docker pull rpryjda/mysql:2
+docker run --name docker-mysql-2 rpryjda/mysql:2
+docker run --name docker-rest-mysql-2 -d --link docker-mysql-2 -p 8080:8080 rpryjda/rest:2
+
+docker logs docker-rest-mysql-2
