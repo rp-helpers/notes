@@ -1,0 +1,2 @@
+https://docs.spring.io/spring-data/rest/docs/2.0.0.M1/reference/html/paging-chapter.html
+https://www.baeldung.com/rest-api-pagination-in-spring
